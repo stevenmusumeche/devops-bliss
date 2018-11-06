@@ -1,0 +1,23 @@
+version: "3.4"
+
+networks:
+  mongo:
+
+services:
+  split-test:
+    image: node:10
+    volumes:
+      - .:/usr/src/svc
+    working_dir: /usr/src/svc
+    ports:
+      - 3000:3000
+    command: bash -c "npm i && npm run dev"
+    environment:
+      - MONGO_URL = mongodb://mymongodb:27017/inventory
+    networks:
+      - mongo
+
+  mymongodb:
+    image: mongo
+    networks:
+      - mongo
